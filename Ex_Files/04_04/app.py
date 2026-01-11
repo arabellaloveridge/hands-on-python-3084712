@@ -1,19 +1,16 @@
 import csv
 from flask import Flask, render_template, request, jsonify
 
-
 app = Flask(__name__)
 
 with open("laureates.csv", "r") as f:
     reader = csv.DictReader(f)
     laureates = list(reader)
 
-
 @app.route("/")
 def index():
     # template found in templates/index.html
     return render_template("index.html")
-
 
 @app.route("/laureates/")
 def laureate_list():
@@ -28,7 +25,8 @@ def laureate_list():
     for laureate in laureates:
         surname = laureate["surname"].lower()
         # your code here
-        if search_string in surname:
+        first_name = laureate['name'].lower()
+        if (search_string in surname) or (search_string in first_name):
             results.append(laureate)
 
     return jsonify(results)
